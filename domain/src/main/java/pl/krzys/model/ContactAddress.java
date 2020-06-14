@@ -50,4 +50,5 @@ public class ContactAddress {
     @ManyToOne
     @JoinColumn(name="contact_id")
     private Contact contact;
+
 }
