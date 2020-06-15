@@ -27,6 +27,9 @@ public class ContactDTO {
     private Set<Long> contactGroupIds;
     private Set<Long> contactAddressIds;
 
+    public ContactDTO() {
+    }
+
     public ContactDTO(Contact contact) {
         this.id = contact.getId();
         this.name = contact.getName();
