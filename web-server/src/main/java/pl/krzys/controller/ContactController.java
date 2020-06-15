@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.krzys.dto.ContactDTO;
-import pl.krzys.repository.ContactRepository;
 import pl.krzys.service.ContactService;
 
 import java.util.ArrayList;
@@ -15,11 +14,9 @@ import java.util.List;
 public class ContactController {
 
     ContactService contactService;
-    ContactRepository contactRepository;
 
-    public ContactController(ContactService contactService, ContactRepository contactRepository) {
+    public ContactController(ContactService contactService) {
         this.contactService = contactService;
-        this.contactRepository = contactRepository;
     }
 
     @GetMapping()
@@ -62,23 +59,30 @@ public class ContactController {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     }
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Contact> updateOne(@PathVariable("id") long id, @RequestBody Contact data)
-//    {
-//        Optional<Contact> original = repository.findById(id);
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ContactDTO> updateOne(@PathVariable("id") long id, @RequestBody ContactDTO data)
+    {
+//        Optional<ContactDTO> original = contactRepository.findById(id);
 //        if(!original.isPresent())
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        data.setId(id);
-//        return new ResponseEntity<>(repository.save(data), HttpStatus.OK);
-//    }
-//
+//        return new ResponseEntity<>(contactRepository.save(data), HttpStatus.OK);
+        ContactDTO contactToUpdate = contactService.getContactById(id);
+        if (contactToUpdate != null) {
+            data.setId(id);
+            contactService.update(data);
+            return new ResponseEntity<>(data, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteOne(@PathVariable("id") long id)
     {
         try {
             contactService.delete(id);
-//            contactRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);

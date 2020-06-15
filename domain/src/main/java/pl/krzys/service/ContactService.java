@@ -46,6 +46,19 @@ public class ContactService {
         }
     }
 
+    public Optional<ContactDTO> update(ContactDTO updateContactDTO) {
+        return Optional.of(this.contactRepository
+                .findById(updateContactDTO.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(contact -> {
+                    contact = contactMapper.contactDTOToContact(updateContactDTO);
+                    contactRepository.save(contact);
+                    return contact;
+                })
+                .map(ContactDTO::new);
+    }
+
     public void delete(long contactId) {
         if(!contactRepository.findById(contactId).isPresent()){
             throw new ResourceNotFoundException();
