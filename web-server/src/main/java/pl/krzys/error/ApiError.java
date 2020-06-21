@@ -1,4 +1,4 @@
-package pl.krzys;
+package pl.krzys.error;
 
 import org.springframework.http.HttpStatus;
 
