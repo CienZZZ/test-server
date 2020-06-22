@@ -83,7 +83,7 @@ public class ContactMapper {
         return contactAddresses;
     }
 
-    public Contact contactFromId(Long id) {
+    public static Contact contactFromId(Long id) {
         if (id == null) {
             return null;
         }
