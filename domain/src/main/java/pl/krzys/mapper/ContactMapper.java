@@ -56,31 +56,31 @@ public class ContactMapper {
     }
 
     private Set<ContactGroup> contactGroupsFromIds(Set<Long> contactGroupIds) {
-        Set<ContactGroup> contactGroups = new HashSet<>();
+        Set<ContactGroup> contactGroupSet = new HashSet<>();
 
         if (contactGroupIds != null) {
-            contactGroups = contactGroupIds.stream().map(ids -> {
+            contactGroupSet = contactGroupIds.stream().map(ids -> {
                 ContactGroup contactGroup = new ContactGroup();
                 contactGroup.setId(ids);
                 return contactGroup;
             }).collect(Collectors.toSet());
         }
 
-        return contactGroups;
+        return contactGroupSet;
     }
 
     private Set<ContactAddress> contactAddressesFromIds(Set<Long> contactAddressIds) {
-        Set<ContactAddress> contactAddresses = new HashSet<>();
+        Set<ContactAddress> contactAddressSet = new HashSet<>();
 
         if (contactAddressIds != null) {
-            contactAddresses = contactAddressIds.stream().map(ids -> {
+            contactAddressSet = contactAddressIds.stream().map(ids -> {
                 ContactAddress contactAddress = new ContactAddress();
                 contactAddress.setId(ids);
                 return contactAddress;
             }).collect(Collectors.toSet());
         }
 
-        return contactAddresses;
+        return contactAddressSet;
     }
 
     public static Contact contactFromId(Long id) {
