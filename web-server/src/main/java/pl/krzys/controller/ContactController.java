@@ -31,7 +31,7 @@ public class ContactController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ContactDTO> getOneById(@PathVariable("id") long id)
+    public ResponseEntity<ContactDTO> getOneById(@PathVariable("id") Long id)
     {
         log.info("received request to get one contact");
         return ResponseEntity.ok(contactService.getContactById(id));
@@ -46,7 +46,7 @@ public class ContactController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ContactDTO> updateOne(@PathVariable("id") long id, @RequestBody ContactDTO data)
+    public ResponseEntity<ContactDTO> updateOne(@PathVariable("id") Long id, @RequestBody ContactDTO data)
     {
         log.info("received request to update contact");
         ContactDTO contactToUpdate = contactService.getContactById(id);
@@ -58,11 +58,11 @@ public class ContactController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteOne(@PathVariable("id") long id)
+    public ResponseEntity<HttpStatus> deleteOne(@PathVariable("id") Long id)
     {
         log.info("received request to delete contact");
         contactService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -28,10 +28,10 @@ public class ContactService {
         return List.ofAll(this.contactRepository.findAll()).map(ContactDTO::new);
     }
 
-    public ContactDTO getContactById(long id) {
+    public ContactDTO getContactById(Long id) {
         Optional<Contact> contact = this.contactRepository.findById(id);
         return contact.map( c-> contactMapper.contactToContactDTO(c)).orElseThrow(
-                ResourceNotFoundException::new
+               ResourceNotFoundException::new
         );
     }
 
@@ -59,7 +59,7 @@ public class ContactService {
                 .map(ContactDTO::new);
     }
 
-    public void delete(long contactId) {
+    public void delete(Long contactId) {
         if(!contactRepository.findById(contactId).isPresent()){
             throw new ResourceNotFoundException();
         } else {
