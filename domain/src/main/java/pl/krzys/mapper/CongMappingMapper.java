@@ -1,11 +1,13 @@
 package pl.krzys.mapper;
 
+import org.springframework.stereotype.Component;
 import pl.krzys.dto.CongMappingDTO;
 import pl.krzys.model.CongMapping;
 
 import static pl.krzys.mapper.ContactGroupMapper.contactGroupFromId;
 import static pl.krzys.mapper.ContactMapper.contactFromId;
 
+@Component
 public class CongMappingMapper {
 
     public CongMappingDTO congMappingToCongMappingDTO(CongMapping congMapping) {

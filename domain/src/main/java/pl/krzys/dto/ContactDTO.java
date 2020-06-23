@@ -40,12 +40,29 @@ public class ContactDTO {
         this.lastModified = contact.getLastModified();
         this.lastModifiedBy = contact.getLastModifiedBy();
         this.mobilePhone = contact.getMobilePhone();
-        this.contactGroupIds = contact.getContactGroups().stream()
-            .map(ContactGroup::getId)
-            .collect(Collectors.toSet());
-        this.contactAddressIds = contact.getContactAddresses().stream()
-            .map(ContactAddress::getId)
-            .collect(Collectors.toSet());
+//        this.contactGroupIds = contact.getContactGroups().stream()    // TODO: how it should be ? if we don't check null then we have null pointer in tests
+//            .map(ContactGroup::getId)
+//            .collect(Collectors.toSet());
+        this.contactGroupIds = getContactGroups(contact);
+        this.contactAddressIds = getContactAddress(contact);
+    }
+
+    private Set<Long> getContactGroups(Contact contact) {
+        if (contact.getContactGroups() != null) {
+            return contact.getContactGroups().stream()
+                    .map(ContactGroup::getId)
+                    .collect(Collectors.toSet());
+        }
+        return null;
+    }
+
+    private Set<Long> getContactAddress(Contact contact) {
+        if (contact.getContactAddresses() != null) {
+            return contact.getContactAddresses().stream()
+                    .map(ContactAddress::getId)
+                    .collect(Collectors.toSet());
+        }
+        return null;
     }
 
     @Override

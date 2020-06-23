@@ -1,10 +1,12 @@
 package pl.krzys.mapper;
 
+import org.springframework.stereotype.Component;
 import pl.krzys.dto.ContactAddressDTO;
 import pl.krzys.model.ContactAddress;
 
 import static pl.krzys.mapper.ContactMapper.contactFromId;
 
+@Component
 public class ContactAddressMapper {
 
     public ContactAddressDTO contactAddressToContactAddressDTO(ContactAddress contactAddress) {
