@@ -1,77 +1,67 @@
 package pl.krzys.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.krzys.model.ContactGroup;
-import pl.krzys.repository.ContactGroupRepository;
+import pl.krzys.dto.ContactGroupDTO;
+import pl.krzys.service.ContactGroupService;
 
-import java.util.ArrayList;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/contactgroup")
 public class ContactGroupController {
-    @Autowired
-    ContactGroupRepository repository;
-    
-    @GetMapping()
-    public ResponseEntity<List<ContactGroup>> getAll() {
-        try {
-            List<ContactGroup> list = new ArrayList<>();
 
-            repository.findAll().forEach(list::add);
-    
-            if(list.isEmpty())
-                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            
-            return new ResponseEntity<>(list, HttpStatus.OK);
-    
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    private static final Logger log = LoggerFactory.getLogger(ContactGroupController.class);
+
+    ContactGroupService contactGroupService;
+
+    public ContactGroupController(ContactGroupService contactGroupService) {
+        this.contactGroupService = contactGroupService;
     }
-    
+
+    @GetMapping()
+    public ResponseEntity<List<ContactGroupDTO>> getAll() {
+        log.info("received request to list contacts groups");
+        return ResponseEntity.ok(contactGroupService.getAllContactGroups().asJava());
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<ContactGroup> getOneById(@PathVariable("id") long id)
+    public ResponseEntity<ContactGroupDTO> getOneById(@PathVariable("id") Long id)
     {
-        Optional<ContactGroup> data = repository.findById(id);
-        if(data.isPresent())
-            return new ResponseEntity<>(data.get(), HttpStatus.OK);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        log.info("received request to get one contact group");
+        return ResponseEntity.ok(contactGroupService.getContactGroupById(id));
     }
+
 
     @PostMapping
-    public ResponseEntity<ContactGroup> create(@RequestBody ContactGroup data) {
-        try {
-            ContactGroup created = repository.save(data);
-            return new ResponseEntity<>(created, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
-        }
+    public ResponseEntity<ContactGroupDTO> create(@RequestBody ContactGroupDTO data) throws URISyntaxException {
+        log.info("received request to create contact group");
+        ContactGroupDTO createdContactGroup = contactGroupService.createNew(data);
+        return ResponseEntity.created(new URI("/api/contactgroup/" + data.getName())).body(createdContactGroup);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ContactGroup> updateOne(@PathVariable("id") long id, @RequestBody ContactGroup data)
+    public ResponseEntity<ContactGroupDTO> updateOne(@PathVariable("id") Long id, @RequestBody ContactGroupDTO data)
     {
-        Optional<ContactGroup> original = repository.findById(id);
-        if(!original.isPresent())
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        data.setId(id);
-        return new ResponseEntity<>(repository.save(data), HttpStatus.OK);
+        log.info("received request to update contact group");
+        ContactGroupDTO contactGroupToUpdate = contactGroupService.getContactGroupById(id);
+        if (contactGroupToUpdate != null) {
+            data.setId(id);
+            contactGroupService.update(data);
+        }
+        return ResponseEntity.ok(data);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteOne(@PathVariable("id") long id)
+    public ResponseEntity<HttpStatus> deleteOne(@PathVariable("id") Long id)
     {
-        try {
-            repository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
+        log.info("received request to delete contact group");
+        contactGroupService.delete(id);
+        return ResponseEntity.noContent().build();
     }
-
 }
