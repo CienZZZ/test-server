@@ -59,7 +59,7 @@ public class ContactGroupMapper {
         return contactGroupSet;
     }
 
-    public ContactGroup contactGroupFromId(Long id) {
+    public static ContactGroup contactGroupFromId(Long id) {
         if (id == null) {
             return null;
         } else {
