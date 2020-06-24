@@ -1,9 +1,13 @@
 package pl.krzys.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
@@ -26,6 +30,8 @@ public class Contact {
     @Column(unique=true, nullable=false)
     private Long id;
 
+    @NotNull
+    @Column(nullable = false)
     private String name;
 
     @Column(name="business_email")

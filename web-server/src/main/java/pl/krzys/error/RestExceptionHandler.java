@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,7 +46,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({ Exception.class })  // TODO: need check if this works
-    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
+    protected ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
         ApiError apiError = new ApiError(INTERNAL_SERVER_ERROR);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
@@ -70,6 +71,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(new ApiError(BAD_REQUEST, error, ex));
     }
 
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return buildResponseEntity(new ApiError(BAD_REQUEST, ex));
+    }
 
     /**
      * Handle HttpMediaTypeNotSupportedException. This one triggers when JSON is invalid as well.

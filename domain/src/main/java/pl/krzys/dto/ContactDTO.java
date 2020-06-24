@@ -6,6 +6,7 @@ import pl.krzys.model.Contact;
 import pl.krzys.model.ContactAddress;
 import pl.krzys.model.ContactGroup;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class ContactDTO {
 
     private Long id;
+    @NotNull(message = "name can not be null")
     private String name;
     private String businessEmail;
     private Long companyId;

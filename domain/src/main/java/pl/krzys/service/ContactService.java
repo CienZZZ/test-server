@@ -35,6 +35,8 @@ public class ContactService {
         );
     }
 
+    // TODO: should be it, check by name? because in database we have contacts with same name, but it will be good,
+    //  in future we can't create contact if have this same name, we will use one and always we can see those created before
     public ContactDTO createNew(ContactDTO newContactDTO) {
         if (this.contactRepository.findByName(newContactDTO.getName()).isPresent()){
             throw new ResourceExistsException(newContactDTO.getName());

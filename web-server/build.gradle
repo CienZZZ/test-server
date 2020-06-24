@@ -20,6 +20,13 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.3.0.RELEASE'
 
+    // https://mvnrepository.com/artifact/javax.validation/validation-api
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.3.0.RELEASE'
+
+
 
     runtimeOnly 'org.postgresql:postgresql'
 

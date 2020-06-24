@@ -74,6 +74,7 @@ class ContactControllerIntegrationTest {
         int databaseSizeBeforeCreate = contactRepository.findAll().size();
 
         ContactDTO contactDTO = contactMapper.contactToContactDTO(contact);
+
         mockMvc.perform(post("/api/contact")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(contactDTO)))
@@ -83,6 +84,57 @@ class ContactControllerIntegrationTest {
         assertThat(contactList).hasSize(databaseSizeBeforeCreate + 1);
         Contact testContact = contactList.get(contactList.size() - 1);
         assertThat(testContact.getName()).isEqualTo(DEFAULT_NAME);
+    }
+
+    @Test
+    public void createContactWithExistingId() throws Exception {
+        int databaseSizeBeforeCreate = contactRepository.findAll().size();
+
+        List<Contact> contactList = contactRepository.findAll();
+        Contact testContact = contactList.get(contactList.size() - 1);
+        contact.setId(testContact.getId());
+
+        ContactDTO contactDTO = contactMapper.contactToContactDTO(contact);
+
+        mockMvc.perform(post("/api/contact")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(contactDTO)))
+                .andExpect(status().isConflict());
+
+        contactList = contactRepository.findAll();
+        assertThat(contactList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    public void createContactWithExistingName() throws Exception {
+        int databaseSizeBeforeCreate = contactRepository.findAll().size();
+
+        ContactDTO contactDTO = contactMapper.contactToContactDTO(contact);
+
+        mockMvc.perform(post("/api/contact")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(contactDTO)))
+                .andExpect(status().isConflict());
+
+        List<Contact> contactList = contactRepository.findAll();
+        assertThat(contactList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    public void checkContactNameIsRequired() throws Exception {
+        int databaseSizeBeforeCreate = contactRepository.findAll().size();
+
+        contact.setName(null);
+
+        ContactDTO contactDTO = contactMapper.contactToContactDTO(contact);
+
+        mockMvc.perform(post("/api/contact")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(contactDTO)))
+                .andExpect(status().isBadRequest());
+
+        List<Contact> contactList = contactRepository.findAll();
+        assertThat(contactList).hasSize(databaseSizeBeforeCreate);
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.krzys.dto.ContactDTO;
 import pl.krzys.service.ContactService;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -39,14 +40,14 @@ public class ContactController {
 
 
     @PostMapping
-    public ResponseEntity<ContactDTO> create(@RequestBody ContactDTO data) throws URISyntaxException {
+    public ResponseEntity<ContactDTO> create(@Valid @RequestBody ContactDTO data) throws URISyntaxException {
         log.info("received request to create contact");
         ContactDTO createdContact = contactService.createNew(data);
         return ResponseEntity.created(new URI("/api/contact/" + data.getName())).body(createdContact);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ContactDTO> updateOne(@PathVariable("id") Long id, @RequestBody ContactDTO data)
+    public ResponseEntity<ContactDTO> updateOne(@PathVariable("id") Long id, @Valid @RequestBody ContactDTO data)
     {
         log.info("received request to update contact");
         ContactDTO contactToUpdate = contactService.getContactById(id);
