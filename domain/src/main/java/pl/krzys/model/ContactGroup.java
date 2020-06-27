@@ -1,12 +1,15 @@
 package pl.krzys.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name="contact_group")
 @NamedQuery(name="ContactGroup.findAll", query="SELECT c FROM ContactGroup c")
-public class ContactGroup {
+public class ContactGroup implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @TableGenerator(name = "default",

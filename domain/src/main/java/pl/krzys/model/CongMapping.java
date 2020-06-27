@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -16,7 +17,9 @@ import java.util.Date;
 @Setter
 @ToString
 @NoArgsConstructor
-public class CongMapping {
+public class CongMapping implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @TableGenerator(name = "default",

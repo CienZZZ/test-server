@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class ContactDTO {
 
     private Long id;
-    @NotNull(message = "name can not be null")
+    @NotNull
     private String name;
     private String businessEmail;
     private Long companyId;

@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -18,7 +19,9 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-public class Contact {
+public class Contact implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @TableGenerator(name = "default",

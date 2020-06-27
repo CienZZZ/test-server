@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="contact_address")
@@ -13,7 +14,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ContactAddress {
+public class ContactAddress implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @TableGenerator(name = "default",
