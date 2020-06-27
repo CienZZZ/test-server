@@ -3,12 +3,10 @@ package pl.krzys.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -18,10 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-public class Contact implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Contact {
 
     @Id
     @TableGenerator(name = "default",

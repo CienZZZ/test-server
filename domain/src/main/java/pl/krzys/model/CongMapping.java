@@ -3,11 +3,9 @@ package pl.krzys.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -15,11 +13,8 @@ import java.util.Date;
 @NamedQuery(name="CongMapping.findAll", query="SELECT c FROM CongMapping c")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-public class CongMapping implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class CongMapping {
 
     @Id
     @TableGenerator(name = "default",
